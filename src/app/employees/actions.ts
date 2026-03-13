@@ -1,6 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabase";
+import type { Database } from "@/types/database";
 import { revalidatePath } from "next/cache";
 
 export async function createEmployee(formData: FormData) {
@@ -21,12 +22,16 @@ export async function createEmployee(formData: FormData) {
     return { error: "Name is required" };
   }
 
-  const { error } = await supabase.from("employees").insert({
+  const insertRow: Database["public"]["Tables"]["employees"]["Insert"] = {
     name: name.trim(),
     role,
-    skills: skillsArray,
+    skills: skillsArray.join(", "),
     hourly_rate: hourlyRate,
-  });
+  };
+
+  // Type assertion: manual Database type may not match Supabase's expected schema; insert resolves to `never`.
+  // Regenerate with `supabase gen types typescript --project-id <id>` and replace @/types/database to fix.
+  const { error } = await supabase.from("employees").insert([insertRow] as any);
 
   if (error) return { error: error.message };
   revalidatePath("/employees");
