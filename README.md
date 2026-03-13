@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cake Workshop – Production Tracking
 
-## Getting Started
+Track who worked on which product and for how long. Use the data for labor cost analysis.
 
-First, run the development server:
+**Stack:** Next.js, Supabase, Tailwind CSS.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Setup
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Create a Supabase project** at [supabase.com](https://supabase.com).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Run the database schema**  
+   In Supabase: **SQL Editor** → New query. Paste and run the contents of  
+   `supabase/migrations/20250313000001_schema.sql`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Seed data (optional)**  
+   In the SQL Editor, run `supabase/seed.sql`.
 
-## Learn More
+4. **Environment variables**  
+   Copy `.env.local.example` to `.env.local` and set:
+   - `NEXT_PUBLIC_SUPABASE_URL` – Project URL from Supabase dashboard
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` – anon public key from Supabase dashboard
 
-To learn more about Next.js, take a look at the following resources:
+5. **Run the app**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Products** – Name and category (list view).
+- **Employees** – Name and skills (list view).
+- **Log work** – No login. Worker selects their name → product → Start (timer) → End → optional partner. Duration is stored as `end_time - start_time`.
+- **Daily report** – Pick a date; see total hours per employee and average time per product.
 
-## Deploy on Vercel
+## Database schema
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `products`: `id`, `name`, `category`
+- `employees`: `id`, `name`, `skills`
+- `work_logs`: `id`, `product_id`, `employee_id`, `start_time`, `end_time`, `partner_id` (nullable)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Duration is computed as `end_time - start_time` (e.g. in the report).
