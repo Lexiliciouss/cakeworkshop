@@ -17,11 +17,9 @@ export async function createProduct(formData: FormData) {
     return { error: "Category is required" };
   }
 
-  const { error } = await supabase.from("products").insert({
-    name: name.trim(),
-    category: category.trim(),
-    standard_minutes: standardMinutes,
-  });
+  const { error } = await supabase
+    .from("products")
+    .insert([{ name: name.trim(), category: category.trim(), standard_minutes: standardMinutes }] as any);
 
   if (error) return { error: error.message };
   revalidatePath("/products");
