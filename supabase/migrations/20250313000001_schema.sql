@@ -33,7 +33,7 @@ create table if not exists public.work_logs (
 create index if not exists work_logs_employee_id on public.work_logs(employee_id);
 create index if not exists work_logs_product_id on public.work_logs(product_id);
 create index if not exists work_logs_start_time on public.work_logs(start_time);
-create index if not exists work_logs_start_time_date on public.work_logs((start_time::date));
+create index if not exists work_logs_start_time_date on public.work_logs(((start_time at time zone 'UTC')::date));
 
 -- RLS: allow all for anonymous (tablet, no login). Restrict in production if needed.
 alter table public.products enable row level security;

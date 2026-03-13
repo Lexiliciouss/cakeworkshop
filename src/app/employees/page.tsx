@@ -1,5 +1,9 @@
 import { supabase } from "@/lib/supabase";
 import type { Employee } from "@/types/database";
+import { EmployeeForm } from "./EmployeeForm";
+import { EmployeeList } from "./EmployeeList";
+
+export const dynamic = "force-dynamic";
 
 async function getEmployees(): Promise<Employee[]> {
   const { data, error } = await supabase
@@ -12,7 +16,14 @@ async function getEmployees(): Promise<Employee[]> {
 }
 
 export default async function EmployeesPage() {
-  const employees = await getEmployees();
+  let employees: Employee[] = [];
+  let error: string | null = null;
+
+  try {
+    employees = await getEmployees();
+  } catch (e) {
+    error = e instanceof Error ? e.message : "Failed to load employees";
+  }
 
   return (
     <div className="py-8">
@@ -20,20 +31,15 @@ export default async function EmployeesPage() {
         Employees
       </h1>
 
-      {employees.length === 0 ? (
-        <p className="text-[var(--muted)]">No employees yet. Add them in Supabase or run seed.</p>
-      ) : (
-        <ul className="rounded-xl border border-amber-200/60 bg-[var(--surface)] overflow-hidden divide-y divide-amber-100">
-          {employees.map((e) => (
-            <li key={e.id} className="px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-              <span className="font-medium">{e.name}</span>
-              {e.skills ? (
-                <span className="text-sm text-[var(--muted)]">{e.skills}</span>
-              ) : null}
-            </li>
-          ))}
-        </ul>
+      {error && (
+        <div className="mb-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">
+          {error}
+        </div>
       )}
+
+      <EmployeeForm />
+
+      <EmployeeList employees={employees} />
     </div>
   );
 }

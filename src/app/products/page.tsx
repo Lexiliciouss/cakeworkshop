@@ -1,5 +1,9 @@
 import { supabase } from "@/lib/supabase";
 import type { Product } from "@/types/database";
+import { ProductForm } from "./ProductForm";
+import { ProductList } from "./ProductList";
+
+export const dynamic = "force-dynamic";
 
 async function getProducts(): Promise<Product[]> {
   const { data, error } = await supabase
@@ -13,13 +17,14 @@ async function getProducts(): Promise<Product[]> {
 }
 
 export default async function ProductsPage() {
-  const products = await getProducts();
+  let products: Product[] = [];
+  let error: string | null = null;
 
-  const byCategory = products.reduce<Record<string, Product[]>>((acc, p) => {
-    if (!acc[p.category]) acc[p.category] = [];
-    acc[p.category].push(p);
-    return acc;
-  }, {});
+  try {
+    products = await getProducts();
+  } catch (e) {
+    error = e instanceof Error ? e.message : "Failed to load products";
+  }
 
   return (
     <div className="py-8">
@@ -27,29 +32,15 @@ export default async function ProductsPage() {
         Products
       </h1>
 
-      {products.length === 0 ? (
-        <p className="text-[var(--muted)]">No products yet. Add them in Supabase or run seed.</p>
-      ) : (
-        <div className="space-y-6">
-          {Object.entries(byCategory).map(([category, items]) => (
-            <section key={category}>
-              <h2 className="text-sm font-medium text-[var(--muted)] uppercase tracking-wide mb-2">
-                {category}
-              </h2>
-              <ul className="rounded-xl border border-amber-200/60 bg-[var(--surface)] overflow-hidden divide-y divide-amber-100">
-                {items.map((p) => (
-                  <li
-                    key={p.id}
-                    className="px-4 py-3 flex justify-between items-center"
-                  >
-                    <span className="font-medium">{p.name}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+      {error && (
+        <div className="mb-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">
+          {error}
         </div>
       )}
+
+      <ProductForm />
+
+      <ProductList products={products} />
     </div>
   );
 }

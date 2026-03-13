@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cake Workshop – Production",
-  description: "Track production and labor for the cake workshop",
+  title: "BENGONG's Tea Australia – Operations",
+  description: "Internal operations dashboard for tea and cake production",
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-[var(--background)] text-[var(--foreground)]`}>
         <Nav />
-        <main className="max-w-4xl mx-auto px-4 py-6 pb-16">
+        <main className="max-w-7xl mx-auto px-4 py-6 pb-16">
           {children}
         </main>
       </body>

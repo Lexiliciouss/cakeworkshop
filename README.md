@@ -9,8 +9,10 @@ Track who worked on which product and for how long. Use the data for labor cost 
 1. **Create a Supabase project** at [supabase.com](https://supabase.com).
 
 2. **Run the database schema**  
-   In Supabase: **SQL Editor** → New query. Paste and run the contents of  
-   `supabase/migrations/20250313000001_schema.sql`.
+   In Supabase: **SQL Editor** → New query. Run in order:
+   - `supabase/migrations/20250313000001_schema.sql`
+   - `supabase/migrations/20250313000002_views.sql`
+   - `supabase/migrations/20250313000003_add_form_fields.sql`
 
 3. **Seed data (optional)**  
    In the SQL Editor, run `supabase/seed.sql`.
@@ -28,15 +30,16 @@ Track who worked on which product and for how long. Use the data for labor cost 
 
 ## Features
 
-- **Products** – Name and category (list view).
-- **Employees** – Name and skills (list view).
-- **Log work** – No login. Worker selects their name → product → Start (timer) → End → optional partner. Duration is stored as `end_time - start_time`.
-- **Daily report** – Pick a date; see total hours per employee and average time per product.
+- **Products** (`/products`) – List products by category.
+- **Employees** (`/employees`) – List employees and skills.
+- **Log work** (`/log`) – No login. Worker selects name → product → Start → End → optional partner.
+- **Work logs** (`/work-logs`) – List all logged work sessions.
+- **Reports** (`/reports`) – Daily employee hours and product summary by date.
 
 ## Database schema
 
-- `products`: `id`, `name`, `category`
-- `employees`: `id`, `name`, `skills`
-- `work_logs`: `id`, `product_id`, `employee_id`, `start_time`, `end_time`, `partner_id` (nullable)
-
-Duration is computed as `end_time - start_time` (e.g. in the report).
+- `products`: `id`, `name`, `category`, `standard_minutes`
+- `employees`: `id`, `name`, `role`, `skills`, `hourly_rate`
+- `work_logs`: `id`, `product_id`, `employee_id`, `start_time`, `end_time`, `partner_id`, `quantity`, `notes`
+- `work_log_summary` (view): per-day product totals and averages
+- `employee_daily_hours` (view): per-day employee total hours

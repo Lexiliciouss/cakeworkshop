@@ -8,18 +8,21 @@ export interface Database {
           id: string;
           name: string;
           category: string;
+          standard_minutes: number;
           created_at: string;
         };
         Insert: {
           id?: string;
           name: string;
           category: string;
+          standard_minutes?: number;
           created_at?: string;
         };
         Update: {
           id?: string;
           name?: string;
           category?: string;
+          standard_minutes?: number;
           created_at?: string;
         };
       };
@@ -27,19 +30,25 @@ export interface Database {
         Row: {
           id: string;
           name: string;
+          role: string;
           skills: string;
+          hourly_rate: number;
           created_at: string;
         };
         Insert: {
           id?: string;
           name: string;
+          role?: string;
           skills?: string;
+          hourly_rate?: number;
           created_at?: string;
         };
         Update: {
           id?: string;
           name?: string;
+          role?: string;
           skills?: string;
+          hourly_rate?: number;
           created_at?: string;
         };
       };
@@ -51,6 +60,8 @@ export interface Database {
           start_time: string;
           end_time: string;
           partner_id: string | null;
+          quantity: number;
+          notes: string;
           created_at: string;
         };
         Insert: {
@@ -60,6 +71,8 @@ export interface Database {
           start_time: string;
           end_time: string;
           partner_id?: string | null;
+          quantity?: number;
+          notes?: string;
           created_at?: string;
         };
         Update: {
@@ -69,7 +82,27 @@ export interface Database {
           start_time?: string;
           end_time?: string;
           partner_id?: string | null;
+          quantity?: number;
+          notes?: string;
           created_at?: string;
+        };
+      };
+      work_log_summary: {
+        Row: {
+          work_date: string;
+          employee_name: string;
+          product_name: string;
+          standard_minutes: number;
+          quantity: number;
+          actual_minutes: number;
+          variance_minutes: number;
+        };
+      };
+      employee_daily_hours: {
+        Row: {
+          employee_name: string;
+          work_date: string;
+          total_hours: number;
         };
       };
     };

@@ -21,12 +21,21 @@ export default function Home() {
           </p>
         </Link>
         <Link
-          href="/report"
+          href="/reports"
           className="block p-6 rounded-xl bg-[var(--surface)] border border-amber-200/60 hover:border-[var(--accent-light)] hover:shadow-md transition-all"
         >
-          <span className="text-[var(--accent)] font-semibold">Daily report</span>
+          <span className="text-[var(--accent)] font-semibold">Reports</span>
           <p className="mt-1 text-sm text-[var(--muted)]">
-            Total hours per employee, average time per product.
+            Daily hours per employee, summary by product.
+          </p>
+        </Link>
+        <Link
+          href="/work-logs"
+          className="block p-6 rounded-xl bg-[var(--surface)] border border-amber-200/60 hover:border-[var(--accent-light)] hover:shadow-md transition-all"
+        >
+          <span className="text-[var(--accent)] font-semibold">Work history</span>
+          <p className="mt-1 text-sm text-[var(--muted)]">
+            View all logged work sessions.
           </p>
         </Link>
         <Link

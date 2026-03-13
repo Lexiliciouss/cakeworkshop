@@ -8,7 +8,8 @@ const links = [
   { href: "/log", label: "Log Work" },
   { href: "/products", label: "Products" },
   { href: "/employees", label: "Employees" },
-  { href: "/report", label: "Report" },
+  { href: "/work-logs", label: "Work History" },
+  { href: "/reports", label: "Reports" },
 ];
 
 export function Nav() {
@@ -17,7 +18,9 @@ export function Nav() {
   return (
     <nav className="border-b border-amber-200/60 bg-[var(--surface)] sticky top-0 z-10">
       <div className="max-w-4xl mx-auto px-4 flex items-center gap-1 h-14">
-        <span className="font-semibold text-[var(--accent)] mr-4">Cake Workshop</span>
+        <span className="font-semibold text-[var(--accent)] mr-4">
+          BENGONG&apos;s Tea
+        </span>
         {links.map(({ href, label }) => (
           <Link
             key={href}
